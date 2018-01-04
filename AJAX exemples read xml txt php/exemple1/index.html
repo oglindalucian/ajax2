@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Techniques AJAX - XMLHttpRequest</title>
+<script type="text/javascript">
+
+function getXMLHttpRequest() {
+var xhr = null;
+if (window.XMLHttpRequest || window.ActiveXObject) {
+ if (window.ActiveXObject) {
+try {
+xhr = new ActiveXObject("Msxml2.XMLHTTP");
+}
+catch(e) {
+ xhr = new ActiveXObject("Microsoft.XMLHTTP");
+ }
+ } else {
+xhr = new XMLHttpRequest();
+ }
+} else {
+alert("Votre navigateur ne supporte pas l'objet XMLHTTPRequest...");
+return null;
+}
+return xhr;
+}
+
+</script>
+
+<script type="text/javascript">
+
+function request(callback) {
+ var xhr = getXMLHttpRequest();
+ xhr.onreadystatechange = function() {
+ if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
+		callback(xhr.responseXML);
+	}
+ };
+ xhr.open("GET", "ex.xml", true);
+ xhr.send(null);
+}
+
+function readData(oData) {
+  var i;
+  var table="<tr><th>Artist</th><th>Title</th><th>Country</th><th>Company</th><th>Price</th><th>Year</th></tr>";
+  var x = oData.getElementsByTagName("CD");
+  for (i = 0; i < x.length; i++) { 
+    table += "<tr>"+
+	"<td>" + x[i].getElementsByTagName("TITLE")[0].childNodes[0].nodeValue + "</td><td>" +
+	x[i].getElementsByTagName("ARTIST")[0].childNodes[0].nodeValue + "</td><td>" +
+	x[i].getElementsByTagName("COUNTRY")[0].childNodes[0].nodeValue + "</td><td>" +
+	x[i].getElementsByTagName("COMPANY")[0].childNodes[0].nodeValue + "</td><td>" +
+	x[i].getElementsByTagName("PRICE")[0].childNodes[0].nodeValue + "</td><td>" +
+	x[i].getElementsByTagName("YEAR")[0].childNodes[0].nodeValue + "</td><td>" 
+	+"</tr>";     
+  }
+  document.getElementById("output").innerHTML = table;
+}
+
+</script></head>
+<body>
+<p>
+ <button onclick="request(readData);">Afficher le fichier XML</button>
+ <table id="output"></table>
+</p>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Techniques AJAX - XMLHttpRequest</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="oXHR.js"></script>
+<script type="text/javascript">
+<!--
+
+function request(callback) {
+var xhr = getXMLHttpRequest();
+xhr.onreadystatechange = function() {
+if (xhr.readyState == 4 && (xhr.status == 200 ||
+xhr.status == 0)) {
+callback(xhr.responseXML);
+}
+};
+xhr.open("GET", "ex.xml", true);
+xhr.send(null);
+}
+
+function readData(oData) {
+  var table="<tr><th>Title</th><th>Artist</th></tr>";
+  var x = oData.getElementsByTagName("book");
+  for (i = 0; i <x.length; i++) { 
+    table += "<tr><td>" +
+    x[i].getElementsByTagName("author")[0].childNodes[0].nodeValue +
+    "</td><td>" +
+    x[i].getElementsByTagName("title")[0].childNodes[0].nodeValue + "</td><td>" +
+	x[i].getElementsByTagName("genre")[0].childNodes[0].nodeValue + "</td><td>" +
+	x[i].getElementsByTagName("price")[0].childNodes[0].nodeValue + "</td><td>" +
+    x[i].getElementsByTagName("publish_date")[0].childNodes[0].nodeValue + "</td><td>" +
+	x[i].getElementsByTagName("description")[0].childNodes[0].nodeValue + "</td><td>" +	
+    "</td></tr>";
+  }
+document.getElementById("output").innerHTML = table;
+}
+//-->
+</script>
+<script>
+$(function() {
+	$("table").css({"padding":"15px", "border-collapse": "collapse"});
+	$("table, th, td").css({"border":"1px solid blue"});
+	$("td").css({"border":"1px solid blue"});
+});
+</script>
+</head>
+<body>
+<p>
+<button onclick="request(readData);">Afficher le fichier
+XML</button>
+<table id="output"></table>
+</p>
+</body>
+</html>

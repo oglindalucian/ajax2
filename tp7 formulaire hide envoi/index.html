@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Valeurs stockées dans les éléments</title>
+  </head>
+  <body>
+    <fieldset style="width:35%;margin:auto;">
+    <legend>Completez ce formulaire:</legend>
+		<form action="#">
+		<table style="width:90%;margin:auto;">
+			<tr>
+				<td><label for="nom" >Entrez votre nom:</label></td><td><input type="text" name="nom" id="nom" size="20"/></td>
+			</tr>
+			<tr>
+				<td><label for="mdp">Entrez le mot de passe:</label></td><td><input type="password" name="mdp" id="mdp" size="20"/></td>
+			</tr>
+			<tr>
+				<td><label for="confirm">Confirmez le mot de passe:</label></td><td><input type="password" name="confirm" id="confirm" size="20"/></td>
+			</tr>
+			<tr>
+				<td><label for="email">Entrez votre adresse courriel:</label></td><td><input type="text" name="email" id="email" size="20"/></td>
+			</tr>
+			<tr>
+				<td><input type="submit" value="Envoyer" id="envoi" class="prevented"/></td>
+				<td><input type="reset" value="Vider" id="vider"/></td>
+			</tr>
+		</table>
+		</form>
+		<span id="erreur2" style="color:red; display:block;"></span>
+		<span id="erreur" style="color:red; display:block;"></span>		
+		<span id="erreur3" style="color:red; display:block;"></span>
+	</fieldset>
+   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script>
+	
+		$(function() {
+			
+			$('input').each(function(index){ 
+			var objet = this;
+				$(objet).focus(function(){
+					myFunction(this);
+				});					
+			
+				$(objet).keydown(function(){
+					myFunction(this);
+				});
+						
+				$(objet).blur(function(){
+					myFunction(this);
+				});
+			});	
+
+						
+			$("#confirm").blur(function() {	
+				if($('#confirm').val()!==$('#mdp').val()) {
+						$('#confirm').css('border','1px solid red'); 
+						$('#envoi').hide();
+						$('#erreur').text("Le mot de passe et la confirmation ne coincident pas!");
+				} else {
+					$('#confirm').css('border','1px solid green'); 
+					$('#erreur').text("");
+					$('#envoi').show();
+				}				
+			});
+			
+			$("#email").blur(function(e) {
+    			var regexCourriel = /.+@.+\..+/;
+				var validiteCourriel = "";
+				if (!regexCourriel.test(e.target.value)) {
+					$('#erreur3').text("Adresse de courriel invalide");
+					$('#envoi').hide();
+					} else {
+								$('#erreur3').text("");
+								$('#envoi').show();
+							}
+			});
+
+			function myFunction(elem) {
+				if (elem.nodeType === document.ELEMENT_NODE) {
+					if(elem.value.length<5) { 
+						elem.style.border = "1px solid red";
+						$('#envoi').hide();
+						$('#erreur2').text("Minimum 5 caracteres pour chaque champ!");
+					} else {
+						elem.style.border = "1px solid green";
+						$('#envoi').show();
+						$('#erreur2').text("");
+					}  
+				}
+			}
+			
+		});
+      
+    </script>
+  </body>
+</html>
